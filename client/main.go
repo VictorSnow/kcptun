@@ -364,8 +364,7 @@ func main() {
 		}, numconn)
 
 		for k := range muxes {
-			sess, err := waitConn()
-			checkError(err)
+			sess := waitConn()
 			muxes[k].session = sess
 			muxes[k].ttl = time.Now().Add(time.Duration(config.AutoExpire) * time.Second)
 		}

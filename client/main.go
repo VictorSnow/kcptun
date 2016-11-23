@@ -351,6 +351,7 @@ func main() {
 				if session, err := createConn(); err == nil {
 					return session
 				} else {
+					log.Println("retry to connect to remote", err)
 					time.Sleep(time.Second)
 				}
 			}
@@ -363,7 +364,7 @@ func main() {
 		}, numconn)
 
 		for k := range muxes {
-			sess, err := createConn()
+			sess, err := waitConn()
 			checkError(err)
 			muxes[k].session = sess
 			muxes[k].ttl = time.Now().Add(time.Duration(config.AutoExpire) * time.Second)
